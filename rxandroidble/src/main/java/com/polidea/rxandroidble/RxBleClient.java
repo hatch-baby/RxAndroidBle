@@ -5,10 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.polidea.rxandroidble.internal.RxBleLog;
-
 import com.polidea.rxandroidble.scan.ScanFilter;
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,6 +34,10 @@ public abstract class RxBleClient {
          * Location Services are switched off. Scanning will not work. Used on API >=23.
          */
         LOCATION_SERVICES_NOT_ENABLED,
+        /**
+         * Bluetooth permission is not given. Scanning and connecting to a device will not work. Used on API >= 31.
+         */
+        NEARBY_DEVICES_PERMISSION_NOT_GRANTED,
         /**
          * Everything is ready to be used.
          */

@@ -29,6 +29,8 @@ import com.polidea.rxandroidble.internal.util.LocationServicesOkObservableApi23;
 import com.polidea.rxandroidble.internal.util.LocationServicesStatus;
 import com.polidea.rxandroidble.internal.util.LocationServicesStatusApi18;
 import com.polidea.rxandroidble.internal.util.LocationServicesStatusApi23;
+import com.polidea.rxandroidble.internal.util.NearbyDevicesPermissionsStatus;
+import com.polidea.rxandroidble.internal.util.NearbyDevicesPermissionsStatusApi31;
 import com.polidea.rxandroidble.internal.util.ObservableUtil;
 import com.polidea.rxandroidble.scan.ScanResult;
 
@@ -151,6 +153,14 @@ public interface ClientComponent {
             return deviceSdk < Build.VERSION_CODES.M
                     ? locationServicesStatusApi18Provider.get()
                     : locationServicesStatusApi23Provider.get();
+        }
+
+        @Provides
+        NearbyDevicesPermissionsStatus provideNearbyDevicesPermissionsStatus(
+                @Named(PlatformConstants.INT_DEVICE_SDK) int deviceSdk,
+                Provider<NearbyDevicesPermissionsStatusApi31> nearbyDevicesPermissionsStatusApi31Provider
+        ) {
+            return nearbyDevicesPermissionsStatusApi31Provider.get();
         }
 
         @Provides

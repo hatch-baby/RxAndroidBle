@@ -17,6 +17,7 @@ import com.polidea.rxandroidble.internal.scan.ScanSetupBuilder;
 import com.polidea.rxandroidble.internal.serialization.ClientOperationQueue;
 import com.polidea.rxandroidble.internal.util.ClientStateObservable;
 import com.polidea.rxandroidble.internal.util.LocationServicesStatus;
+import com.polidea.rxandroidble.internal.util.NearbyDevicesPermissionsStatus;
 import com.polidea.rxandroidble.internal.util.RxBleAdapterWrapper;
 import com.polidea.rxandroidble.internal.util.UUIDUtil;
 import com.polidea.rxandroidble.scan.ScanFilter;
@@ -54,6 +55,7 @@ class RxBleClientImpl extends RxBleClient {
     private final Observable<BleAdapterState> rxBleAdapterStateObservable;
     private final LocationServicesStatus locationServicesStatus;
     private final Lazy<ClientStateObservable> lazyClientStateObservable;
+    private final NearbyDevicesPermissionsStatus nearbyDevicesPermissionsStatus;
 
     @Inject
     RxBleClientImpl(RxBleAdapterWrapper rxBleAdapterWrapper,
@@ -61,6 +63,7 @@ class RxBleClientImpl extends RxBleClient {
                     Observable<BleAdapterState> adapterStateObservable,
                     UUIDUtil uuidUtil,
                     LocationServicesStatus locationServicesStatus,
+                    NearbyDevicesPermissionsStatus nearbyDevicesPermissionsStatus,
                     Lazy<ClientStateObservable> lazyClientStateObservable,
                     RxBleDeviceProvider rxBleDeviceProvider,
                     ScanSetupBuilder scanSetupBuilder,
@@ -73,6 +76,7 @@ class RxBleClientImpl extends RxBleClient {
         this.rxBleAdapterWrapper = rxBleAdapterWrapper;
         this.rxBleAdapterStateObservable = adapterStateObservable;
         this.locationServicesStatus = locationServicesStatus;
+        this.nearbyDevicesPermissionsStatus = nearbyDevicesPermissionsStatus;
         this.lazyClientStateObservable = lazyClientStateObservable;
         this.rxBleDeviceProvider = rxBleDeviceProvider;
         this.scanSetupBuilder = scanSetupBuilder;
@@ -218,6 +222,9 @@ class RxBleClientImpl extends RxBleClient {
         }
         if (!rxBleAdapterWrapper.isBluetoothEnabled()) {
             return State.BLUETOOTH_NOT_ENABLED;
+        }
+        if (!nearbyDevicesPermissionsStatus.isNearbyDevicesPermissionOk()) {
+            return State.NEARBY_DEVICES_PERMISSION_NOT_GRANTED;
         }
         if (!locationServicesStatus.isLocationProviderOk()) {
             return State.LOCATION_SERVICES_NOT_ENABLED;
