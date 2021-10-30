@@ -23,8 +23,11 @@ public class CheckerLocationPermission {
             return isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
                     || isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
 
-        } else {
+        } else if (Math.min(Build.VERSION.SDK_INT, provideTargetSdk()) < 30) {
             return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
+        } else {
+            // In API 31 location is no loner required, return true in this case
+            return true;
         }
     }
 

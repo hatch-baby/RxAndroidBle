@@ -37,13 +37,12 @@ import com.polidea.rxandroidble.scan.ScanResult;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import bleshadow.javax.inject.Named;
-import bleshadow.javax.inject.Provider;
-
 import bleshadow.dagger.Binds;
 import bleshadow.dagger.Component;
 import bleshadow.dagger.Module;
 import bleshadow.dagger.Provides;
+import bleshadow.javax.inject.Named;
+import bleshadow.javax.inject.Provider;
 import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func1;
@@ -58,6 +57,7 @@ public interface ClientComponent {
         public static final String BLUETOOTH_INTERACTION = "executor_bluetooth_interaction";
         public static final String BLUETOOTH_CALLBACKS = "executor_bluetooth_callbacks";
         public static final String CONNECTION_QUEUE = "executor_connection_queue";
+
         private NamedExecutors() {
 
         }
@@ -69,6 +69,7 @@ public interface ClientComponent {
         public static final String TIMEOUT = "timeout";
         public static final String BLUETOOTH_INTERACTION = "bluetooth_interaction";
         public static final String BLUETOOTH_CALLBACKS = "bluetooth_callbacks";
+
         private NamedSchedulers() {
 
         }
@@ -79,6 +80,7 @@ public interface ClientComponent {
         public static final String INT_TARGET_SDK = "target-sdk";
         public static final String INT_DEVICE_SDK = "device-sdk";
         public static final String BOOL_IS_ANDROID_WEAR = "android-wear";
+
         private PlatformConstants() {
 
         }
@@ -87,6 +89,7 @@ public interface ClientComponent {
     class NamedBooleanObservables {
 
         public static final String LOCATION_SERVICES_OK = "location-ok-boolean-observable";
+
         private NamedBooleanObservables() {
 
         }
@@ -97,6 +100,7 @@ public interface ClientComponent {
         public static final String ENABLE_NOTIFICATION_VALUE = "enable-notification-value";
         public static final String ENABLE_INDICATION_VALUE = "enable-indication-value";
         public static final String DISABLE_NOTIFICATION_VALUE = "disable-notification-value";
+
         private BluetoothConstants() {
 
         }
@@ -157,7 +161,6 @@ public interface ClientComponent {
 
         @Provides
         NearbyDevicesPermissionsStatus provideNearbyDevicesPermissionsStatus(
-                @Named(PlatformConstants.INT_DEVICE_SDK) int deviceSdk,
                 Provider<NearbyDevicesPermissionsStatusApi31> nearbyDevicesPermissionsStatusApi31Provider
         ) {
             return nearbyDevicesPermissionsStatusApi31Provider.get();
