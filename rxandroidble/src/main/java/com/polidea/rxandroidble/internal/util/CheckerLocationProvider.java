@@ -23,6 +23,10 @@ public class CheckerLocationProvider {
     }
 
     public boolean isLocationProviderEnabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // On API 31 location provider is not a requirement
+            return true;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 return Settings.Secure.getInt(contentResolver, Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_OFF;

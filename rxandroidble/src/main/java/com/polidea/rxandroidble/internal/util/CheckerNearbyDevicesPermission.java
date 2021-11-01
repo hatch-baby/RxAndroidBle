@@ -9,30 +9,27 @@ import android.os.Process;
 
 import bleshadow.javax.inject.Inject;
 
-public class CheckerLocationPermission {
+public class CheckerNearbyDevicesPermission {
 
     private final Context context;
 
     @Inject
-    public CheckerLocationPermission(Context context) {
+    public CheckerNearbyDevicesPermission(Context context) {
         this.context = context;
     }
 
-    boolean isLocationPermissionGranted() {
-        if (Math.min(Build.VERSION.SDK_INT, provideTargetSdk()) < 29) {
-            return isPermissionGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    || isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
-
-        } else if (Math.min(Build.VERSION.SDK_INT, provideTargetSdk()) < 30) {
-            return isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
+    boolean isNearbyDevicesPermissionGranted() {
+        if (Math.min(Build.VERSION.SDK_INT, provideTargetSdk()) >= 31) {
+            return isPermissionGranted(Manifest.permission.BLUETOOTH_SCAN)
+                    || isPermissionGranted(Manifest.permission.BLUETOOTH_CONNECT);
         } else {
-            // In API 31 location is no loner required, return true in this case
-            return true;
+            return false;
         }
     }
 
     /**
      * Copied from android.support.v4.content.ContextCompat for backwards compatibility
+     *
      * @param permission the permission to check
      * @return true is granted
      */
@@ -41,7 +38,7 @@ public class CheckerLocationPermission {
             throw new IllegalArgumentException("permission is null");
         }
 
-        return context.checkPermission(permission, android.os.Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
+        return context.checkPermission(permission, Process.myPid(), Process.myUid()) == PackageManager.PERMISSION_GRANTED;
     }
 
     private int provideTargetSdk() {
